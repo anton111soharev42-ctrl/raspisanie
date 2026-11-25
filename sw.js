@@ -1,6 +1,6 @@
 // Кэш оболочки приложения, чтобы оно открывалось без интернета.
 // Данные расписания всегда берутся из сети (последняя версия хранится в самом приложении).
-const CACHE = "pary-v1";
+const CACHE = "pary-v2";
 const SHELL = [
   "./",
   "./index.html",
@@ -24,6 +24,7 @@ self.addEventListener("fetch", e => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET") return;
   if (/google\.com$|googleusercontent\.com$/.test(url.hostname) && !url.hostname.startsWith("fonts.")) return;
+  if (url.hostname === "hits.sh") return;
   // сначала сеть (чтобы обновления приложения приходили сразу), при её отсутствии — кэш
   e.respondWith(
     fetch(e.request).then(res => {
